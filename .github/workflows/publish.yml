@@ -1,0 +1,23 @@
+name: "Publish"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish articles on hashnode
+        id: publish_hashnode
+        uses: raunakgurud09/hashnode-publish@v2
+        with:
+          host: "phaneesh.hashnode.dev"
+          file: "post/blog/test.md"
+          hashnode_key: ${{secrets.HASHNODE_KEY}}
+      - name: Get get output
+        run: echo "${{steps.publish_hashnode.outputs.result_json}} length ${{steps.publish_hashnode.outputs.result_summary}}"
